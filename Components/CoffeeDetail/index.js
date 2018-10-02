@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 // NativeBase Components
 import {
@@ -19,11 +20,16 @@ import list from "../CoffeeList/list";
 // Style
 import styles from "./styles";
 
+// Actions
+import {
+  getCoffeeShopByID,
+  getCoffeeShops
+} from "../../stores/actions/coffeeActions";
+
 class CoffeeDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      detail: list[0],
       drink: "Coffee",
       option: "Small"
     };
@@ -38,19 +44,31 @@ class CoffeeDetail extends Component {
       option: value
     });
   }
+
+  componentDidUpdate(prevProps) {
+    const { coffeeshop, loading, coffeeshops } = this.props.coffee;
+
+    if (!loading) {
+      if (!coffeeshop && coffeeshops) {
+        this.props.getCoffeeShopByID(1, coffeeshops);
+      }
+    }
+  }
   render() {
+    const { coffeeshop } = this.props.coffee;
+    if (!coffeeshop) return <List />;
     return (
       <List>
         <ListItem style={styles.top}>
           <Left>
             <Text style={styles.text}>
-              {this.state.detail.name + "\n"}
-              <Text note>{this.state.detail.location}</Text>
+              {coffeeshop.name + "\n"}
+              <Text note>{coffeeshop.location}</Text>
             </Text>
           </Left>
           <Body />
           <Right>
-            <Thumbnail bordered source={this.state.detail.image} />
+            <Thumbnail bordered source={{ uri: coffeeshop.img }} />
           </Right>
         </ListItem>
         <ListItem style={{ borderBottomWidth: 0 }}>
@@ -89,4 +107,14 @@ class CoffeeDetail extends Component {
   }
 }
 
-export default CoffeeDetail;
+const mapStateToProps = state => ({
+  coffee: state.coffee
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    getCoffeeShopByID,
+    getCoffeeShops
+  }
+)(CoffeeDetail);

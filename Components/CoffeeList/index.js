@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { ImageBackground, View } from "react-native";
-
-// Data
-import list from "./list";
+import { connect } from "react-redux";
 
 // NativeBase Components
 import {
@@ -22,7 +20,7 @@ class CoffeeList extends Component {
   renderItem(data) {
     return (
       <ImageBackground
-        source={data.background}
+        source={{ uri: data.background }}
         style={styles.background}
         key={data.id}
       >
@@ -34,7 +32,7 @@ class CoffeeList extends Component {
               <Left>
                 <Thumbnail
                   bordered
-                  source={data.image}
+                  source={{ uri: data.img }}
                   style={styles.thumbnail}
                 />
                 <Text style={styles.text}>{data.name}</Text>
@@ -49,9 +47,21 @@ class CoffeeList extends Component {
     );
   }
   render() {
-    const ListItems = list.map(data => this.renderItem(data));
+    const { coffeeshops } = this.props.coffee;
+    let ListItems;
+    if (coffeeshops) {
+      console.log(coffeeshops);
+      ListItems = coffeeshops.map(data => this.renderItem(data));
+    }
     return <List>{ListItems}</List>;
   }
 }
 
-export default CoffeeList;
+const mapStateToProps = state => ({
+  coffee: state.coffee
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(CoffeeList);

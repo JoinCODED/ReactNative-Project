@@ -26,6 +26,7 @@ var list = [
     lat: 29.33763773,
     lng: 47.9161726
   },
+
   {
     id: 3,
     name: "Caribu",

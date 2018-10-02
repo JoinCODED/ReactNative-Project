@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ImageBackground, View } from "react-native";
+import { connect } from "react-redux";
 
 // NativeBase Components
 import {
@@ -25,7 +26,14 @@ import background from "../../assets/images/10.jpg";
 // Style
 import styles from "./styles";
 
+// Actions
+import { getCoffeeShops } from "../../stores/actions/coffeeActions";
+
 class HomePage extends Component {
+  componentDidMount() {
+    const { coffeeshops } = this.props.coffee;
+    if (!coffeeshops) this.props.getCoffeeShops();
+  }
   render() {
     return (
       <ImageBackground source={background} style={styles.background}>
@@ -33,10 +41,10 @@ class HomePage extends Component {
         <Container style={styles.transparent}>
           <MyHeader />
           <Content>
-            <CoffeeList />
+            <CoffeeDetail />
           </Content>
-          <Footer style={styles.transparent}>
-            <FooterTab>
+          <Footer transparent style={styles.transparent}>
+            <FooterTab transparent style={styles.transparent}>
               <Button full>
                 <Text style={styles.footerbutton}>
                   <Icon name="exit" style={styles.footericon} /> Cart
@@ -49,5 +57,13 @@ class HomePage extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  coffee: state.coffee
+});
 
-export default HomePage;
+export default connect(
+  mapStateToProps,
+  {
+    getCoffeeShops
+  }
+)(HomePage);
