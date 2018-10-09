@@ -3,7 +3,7 @@ import Expo, { AppLoading } from "expo";
 import { Provider } from "react-redux";
 
 // Store
-import store from "./stores";
+import store from "./store";
 
 // Component
 import HomePage from "./Components/HomePage";

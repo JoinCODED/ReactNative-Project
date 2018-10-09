@@ -24,7 +24,7 @@ import styles from "./styles";
 import {
   getCoffeeShopByID,
   getCoffeeShops
-} from "../../stores/actions/coffeeActions";
+} from "../../store/actions/coffeeActions";
 
 class CoffeeDetail extends Component {
   constructor(props) {
@@ -111,10 +111,14 @@ const mapStateToProps = state => ({
   coffee: state.coffee
 });
 
+const mapActionsToProps = dispatch => ({
+  getCoffeeShops: () => dispatch(getCoffeeShops()),
+
+  getCoffeeShopByID: (id, coffeeshops) =>
+    dispatch(getCoffeeShopByID(id, coffeeshops))
+});
+
 export default connect(
   mapStateToProps,
-  {
-    getCoffeeShopByID,
-    getCoffeeShops
-  }
+  mapActionsToProps
 )(CoffeeDetail);

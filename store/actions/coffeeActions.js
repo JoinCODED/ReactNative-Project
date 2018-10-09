@@ -1,11 +1,7 @@
 import axios from "axios";
 
 // Types
-import {
-  COFFEESHOPS_LOADING,
-  GET_COFFEESHOPS,
-  GET_COFFEESHOP_BY_ID
-} from "./types";
+import * as actionTypes from "./types";
 
 // Get all coffeeShops
 export const getCoffeeShops = () => dispatch => {
@@ -15,7 +11,7 @@ export const getCoffeeShops = () => dispatch => {
     .then(res => res.data)
     .then(coffeeshops => {
       dispatch({
-        type: GET_COFFEESHOPS,
+        type: actionTypes.GET_COFFEESHOPS,
         payload: coffeeshops
       });
     })
@@ -24,16 +20,14 @@ export const getCoffeeShops = () => dispatch => {
 
 // Get a specific coffeeshop by id
 export const getCoffeeShopByID = (id, coffeeshops) => dispatch => {
-  const coffeeshop =
-    coffeeshops.find(shop => Number(shop.id) === Number(id)) || {};
-  console.log(coffeeshop);
+  const coffeeshop = coffeeshops.find(shop => shop.id === id) || {};
   dispatch({
-    type: GET_COFFEESHOP_BY_ID,
+    type: actionTypes.GET_COFFEESHOP_BY_ID,
     payload: coffeeshop
   });
 };
 
 // Set the loading state
 export const setCoffeeShopsLoading = () => ({
-  type: COFFEESHOPS_LOADING
+  type: actionTypes.COFFEESHOPS_LOADING
 });

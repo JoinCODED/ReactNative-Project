@@ -50,7 +50,6 @@ class CoffeeList extends Component {
     const { coffeeshops } = this.props.coffee;
     let ListItems;
     if (coffeeshops) {
-      console.log(coffeeshops);
       ListItems = coffeeshops.map(data => this.renderItem(data));
     }
     return <List>{ListItems}</List>;

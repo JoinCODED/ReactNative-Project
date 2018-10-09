@@ -27,7 +27,7 @@ import background from "../../assets/images/10.jpg";
 import styles from "./styles";
 
 // Actions
-import { getCoffeeShops } from "../../stores/actions/coffeeActions";
+import { getCoffeeShops } from "../../store/actions/coffeeActions";
 
 class HomePage extends Component {
   componentDidMount() {
@@ -41,7 +41,7 @@ class HomePage extends Component {
         <Container style={styles.transparent}>
           <MyHeader />
           <Content>
-            <CoffeeDetail />
+            <CoffeeList />
           </Content>
           <Footer transparent style={styles.transparent}>
             <FooterTab transparent style={styles.transparent}>
@@ -61,9 +61,11 @@ const mapStateToProps = state => ({
   coffee: state.coffee
 });
 
+const mapActionsToProps = dispatch => ({
+  getCoffeeShops: () => dispatch(getCoffeeShops())
+});
+
 export default connect(
   mapStateToProps,
-  {
-    getCoffeeShops
-  }
+  mapActionsToProps
 )(HomePage);
