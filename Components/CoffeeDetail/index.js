@@ -11,7 +11,8 @@ import {
   Right,
   List,
   ListItem,
-  Picker
+  Picker,
+  Content
 } from "native-base";
 
 // List
@@ -34,6 +35,9 @@ class CoffeeDetail extends Component {
       option: "Small"
     };
   }
+  componentDidMount() {
+    console.log("works");
+  }
   changeDrink(value) {
     this.setState({
       drink: value
@@ -45,64 +49,57 @@ class CoffeeDetail extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    const { coffeeshop, loading, coffeeshops } = this.props.coffee;
-
-    if (!loading) {
-      if (!coffeeshop && coffeeshops) {
-        this.props.getCoffeeShopByID(1, coffeeshops);
-      }
-    }
-  }
   render() {
     const { coffeeshop } = this.props.coffee;
     if (!coffeeshop) return <List />;
     return (
-      <List>
-        <ListItem style={styles.top}>
-          <Left>
-            <Text style={styles.text}>
-              {coffeeshop.name + "\n"}
-              <Text note>{coffeeshop.location}</Text>
-            </Text>
-          </Left>
-          <Body />
-          <Right>
-            <Thumbnail bordered source={{ uri: coffeeshop.img }} />
-          </Right>
-        </ListItem>
-        <ListItem style={{ borderBottomWidth: 0 }}>
-          <Left>
-            <Picker
-              note
-              mode="dropdown"
-              style={{ width: 150 }}
-              selectedValue={this.state.drink}
-              onValueChange={this.changeDrink.bind(this)}
-            >
-              <Picker.Item label="Coffee" value="Coffee" />
-              <Picker.Item label="Lattee" value="Lattee" />
-              <Picker.Item label="Espresso" value="Espresso" />
-            </Picker>
-          </Left>
-          <Body>
-            <Picker
-              note
-              mode="dropdown"
-              style={{ width: 150 }}
-              selectedValue={this.state.option}
-              onValueChange={this.changeOption.bind(this)}
-            >
-              <Picker.Item label="Small" value="Small" />
-              <Picker.Item label="Medium" value="Medium" />
-              <Picker.Item label="Large" value="Large" />
-            </Picker>
-          </Body>
-        </ListItem>
-        <Button full danger>
-          <Text>Add</Text>
-        </Button>
-      </List>
+      <Content>
+        <List>
+          <ListItem style={styles.top}>
+            <Left>
+              <Text style={styles.text}>
+                {coffeeshop.name + "\n"}
+                <Text note>{coffeeshop.location}</Text>
+              </Text>
+            </Left>
+            <Body />
+            <Right>
+              <Thumbnail bordered source={{ uri: coffeeshop.img }} />
+            </Right>
+          </ListItem>
+          <ListItem style={{ borderBottomWidth: 0 }}>
+            <Left>
+              <Picker
+                note
+                mode="dropdown"
+                style={{ width: 150 }}
+                selectedValue={this.state.drink}
+                onValueChange={this.changeDrink.bind(this)}
+              >
+                <Picker.Item label="Coffee" value="Coffee" />
+                <Picker.Item label="Lattee" value="Lattee" />
+                <Picker.Item label="Espresso" value="Espresso" />
+              </Picker>
+            </Left>
+            <Body>
+              <Picker
+                note
+                mode="dropdown"
+                style={{ width: 150 }}
+                selectedValue={this.state.option}
+                onValueChange={this.changeOption.bind(this)}
+              >
+                <Picker.Item label="Small" value="Small" />
+                <Picker.Item label="Medium" value="Medium" />
+                <Picker.Item label="Large" value="Large" />
+              </Picker>
+            </Body>
+          </ListItem>
+          <Button full danger>
+            <Text>Add</Text>
+          </Button>
+        </List>
+      </Content>
     );
   }
 }

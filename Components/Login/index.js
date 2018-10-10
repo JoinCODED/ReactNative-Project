@@ -63,7 +63,11 @@ class Login extends Component {
             </Form>
           </Body>
         </ListItem>
-        <Button full success>
+        <Button
+          full
+          success
+          onPress={() => this.props.navigation.navigate("Main")}
+        >
           <Text>Login</Text>
         </Button>
         <Button full warning>

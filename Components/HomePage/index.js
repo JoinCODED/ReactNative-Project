@@ -1,17 +1,9 @@
 import React, { Component } from "react";
-import { ImageBackground, View } from "react-native";
 import { connect } from "react-redux";
+import { createStackNavigator } from "react-navigation";
 
 // NativeBase Components
-import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  Icon,
-  Text
-} from "native-base";
+import { Container } from "native-base";
 
 // Components
 import CoffeeList from "../CoffeeList";
@@ -20,14 +12,27 @@ import CoffeeCart from "../CoffeeCart";
 import MyHeader from "../MyHeader";
 import Login from "../Login";
 
-// Background Image
-import background from "../../assets/images/10.jpg";
-
 // Style
 import styles from "./styles";
 
 // Actions
 import { getCoffeeShops } from "../../store/actions/coffeeActions";
+
+const Nav = createStackNavigator(
+  {
+    CoffeeList: CoffeeList,
+    CoffeeDetail: CoffeeDetail,
+    CoffeeCart: CoffeeCart
+  },
+  {
+    navigationOptions: {
+      header: MyHeader
+    },
+    cardStyle: {
+      backgroundColor: "rgb(20,90,100)"
+    }
+  }
+);
 
 class HomePage extends Component {
   componentDidMount() {
@@ -36,24 +41,9 @@ class HomePage extends Component {
   }
   render() {
     return (
-      <ImageBackground source={background} style={styles.background}>
-        <View style={styles.overlay} />
-        <Container style={styles.transparent}>
-          <MyHeader />
-          <Content>
-            <CoffeeList />
-          </Content>
-          <Footer transparent style={styles.transparent}>
-            <FooterTab transparent style={styles.transparent}>
-              <Button full>
-                <Text style={styles.footerbutton}>
-                  <Icon name="exit" style={styles.footericon} /> Cart
-                </Text>
-              </Button>
-            </FooterTab>
-          </Footer>
-        </Container>
-      </ImageBackground>
+      <Container style={styles.transparent}>
+        <Nav />
+      </Container>
     );
   }
 }

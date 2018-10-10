@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ImageBackground, View } from "react-native";
+import { ImageBackground, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 
 // NativeBase Components
@@ -10,40 +10,47 @@ import {
   CardItem,
   Thumbnail,
   Text,
-  Left
+  Left,
+  Content
 } from "native-base";
 
 // Style
 import styles from "./styles";
+import { getCoffeeShopByID } from "../../store/actions/coffeeActions";
 
 class CoffeeList extends Component {
+  Pressed(data) {
+    this.props.getCoffeeShopByID(data.id,this.props.coffee.coffeeshops)
+    this.props.navigation.navigate("CoffeeDetail");
+  }
   renderItem(data) {
     return (
-      <ImageBackground
-        source={{ uri: data.background }}
-        style={styles.background}
-        key={data.id}
-      >
-        <View style={styles.overlay} />
+      <TouchableOpacity key={data.id} onPress={() => this.Pressed(data)}>
+        <ImageBackground
+          source={{ uri: data.background }}
+          style={styles.background}
+        >
+          <View style={styles.overlay} />
 
-        <ListItem style={styles.transparent}>
-          <Card style={styles.transparent}>
-            <CardItem style={styles.transparent}>
-              <Left>
-                <Thumbnail
-                  bordered
-                  source={{ uri: data.img }}
-                  style={styles.thumbnail}
-                />
-                <Text style={styles.text}>{data.name}</Text>
-                <Text note style={styles.text}>
-                  {data.distance}
-                </Text>
-              </Left>
-            </CardItem>
-          </Card>
-        </ListItem>
-      </ImageBackground>
+          <ListItem style={styles.transparent}>
+            <Card style={styles.transparent}>
+              <CardItem style={styles.transparent}>
+                <Left>
+                  <Thumbnail
+                    bordered
+                    source={{ uri: data.img }}
+                    style={styles.thumbnail}
+                  />
+                  <Text style={styles.text}>{data.name}</Text>
+                  <Text note style={styles.text}>
+                    {data.distance}
+                  </Text>
+                </Left>
+              </CardItem>
+            </Card>
+          </ListItem>
+        </ImageBackground>
+      </TouchableOpacity>
     );
   }
   render() {
@@ -52,7 +59,11 @@ class CoffeeList extends Component {
     if (coffeeshops) {
       ListItems = coffeeshops.map(data => this.renderItem(data));
     }
-    return <List>{ListItems}</List>;
+    return (
+      <Content>
+        <List>{ListItems}</List>
+      </Content>
+    );
   }
 }
 
@@ -62,5 +73,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  {
+    getCoffeeShopByID
+  }
 )(CoffeeList);
