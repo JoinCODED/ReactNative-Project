@@ -35,9 +35,6 @@ class CoffeeDetail extends Component {
       option: "Small"
     };
   }
-  componentDidMount() {
-    console.log("works");
-  }
   changeDrink(value) {
     this.setState({
       drink: value

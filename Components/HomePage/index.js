@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
 
 // NativeBase Components
-import { Container } from "native-base";
+import { Container, Header } from "native-base";
 
 // Components
 import CoffeeList from "../CoffeeList";
@@ -22,9 +22,11 @@ const Nav = createStackNavigator(
   {
     CoffeeList: CoffeeList,
     CoffeeDetail: CoffeeDetail,
-    CoffeeCart: CoffeeCart
+    CoffeeCart: CoffeeCart,
+    Login: Login
   },
   {
+    initialRouteName: "Login",
     navigationOptions: {
       header: MyHeader
     },
