@@ -20,6 +20,11 @@ import {
 
 // Actions
 import { loginUser, registerUser } from "../../store/actions/authActions";
+import { setCurrentUser } from "../../store/actions/authActions";
+
+// deviceStorage
+import deviceStorage from "../../utilities/deviceStorage";
+import jwt_decode from "jwt-decode";
 
 class Login extends Component {
   constructor(props) {
@@ -30,9 +35,7 @@ class Login extends Component {
     };
   }
   componentDidMount() {
-    if (this.props.auth.isAuthenticated) {
-      this.props.navigation.navigate("CoffeeList");
-    }
+    deviceStorage.getToken().then(value => this.handleToken(value));
   }
   handleLogin() {
     const { username, password } = this.state;
@@ -57,6 +60,13 @@ class Login extends Component {
       navigation
     );
     Keyboard.dismiss();
+  }
+  handleToken(token) {
+    if (token) {
+      const decoded = jwt_decode(token);
+      this.props.setCurrentUser(decoded);
+      this.props.navigation.navigate("CoffeeList");
+    }
   }
   render() {
     const { username, password } = this.state;
@@ -128,7 +138,8 @@ const mapActionsToProps = dispatch => ({
   loginUser: (userData, navigation) =>
     dispatch(loginUser(userData, navigation)),
   registerUser: (userData, navigation) =>
-    dispatch(registerUser(userData, navigation))
+    dispatch(registerUser(userData, navigation)),
+  setCurrentUser: token => dispatch(setCurrentUser(token))
 });
 
 export default connect(

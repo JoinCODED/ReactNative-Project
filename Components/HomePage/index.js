@@ -41,6 +41,7 @@ class HomePage extends Component {
     const { coffeeshops } = this.props.coffee;
     if (!coffeeshops) this.props.getCoffeeShops();
   }
+
   render() {
     return (
       <Container style={styles.transparent}>

@@ -26,6 +26,7 @@ import {
   getCoffeeShopByID,
   getCoffeeShops
 } from "../../store/actions/coffeeActions";
+import { addItemToCart } from "../../store/actions/cartActions";
 
 class CoffeeDetail extends Component {
   constructor(props) {
@@ -44,6 +45,16 @@ class CoffeeDetail extends Component {
     this.setState({
       option: value
     });
+  }
+  handleAdd() {
+    const { drink, option } = this.state;
+    const { list } = this.props.cart;
+    let item = {
+      drink: drink,
+      option: option,
+      quantity: 1
+    };
+    this.props.addItemToCart(item, list);
   }
 
   render() {
@@ -92,7 +103,7 @@ class CoffeeDetail extends Component {
               </Picker>
             </Body>
           </ListItem>
-          <Button full danger>
+          <Button full danger onPress={() => this.handleAdd()}>
             <Text>Add</Text>
           </Button>
         </List>
@@ -102,14 +113,17 @@ class CoffeeDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-  coffee: state.coffee
+  coffee: state.coffee,
+  cart: state.cart
 });
 
 const mapActionsToProps = dispatch => ({
   getCoffeeShops: () => dispatch(getCoffeeShops()),
 
   getCoffeeShopByID: (id, coffeeshops) =>
-    dispatch(getCoffeeShopByID(id, coffeeshops))
+    dispatch(getCoffeeShopByID(id, coffeeshops)),
+
+  addItemToCart: (item, cart) => dispatch(addItemToCart(item, cart))
 });
 
 export default connect(

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 // NativeBase Components
 import {
@@ -12,29 +13,19 @@ import {
   Icon
 } from "native-base";
 
-// List
-import list from "../CoffeeList/list";
+// Actions
+import {
+  removeItemFromCart,
+  checkoutCart
+} from "../../store/actions/cartActions";
 
 class CoffeeCart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      orders: [
-        {
-          drink: "Coffee",
-          option: "Small",
-          quantity: 1
-        },
-        {
-          drink: "Lattee",
-          option: "Large",
-          quantity: 2
-        }
-      ],
-      shop: list[0]
-    };
+  handleCheckout() {
+    this.props.checkoutCart();
   }
-
+  handleRemove(item) {
+    this.props.removeItemFromCart(item);
+  }
   renderItem(item, index) {
     return (
       <ListItem key={index}>
@@ -48,17 +39,19 @@ class CoffeeCart extends Component {
           <Text style={{ color: "white" }}>{item.quantity}</Text>
         </Body>
         <Right>
-          <Icon name="trash" style={{ color: "white", fontSize: 21 }} />
+          <Button transparent onPress={() => this.handleRemove(item)}>
+            <Icon name="trash" style={{ color: "white", fontSize: 21 }} />
+          </Button>
         </Right>
       </ListItem>
     );
   }
   render() {
+    const { list } = this.props.cart;
     return (
       <List>
-        {this.state.orders.map((item, index) => this.renderItem(item, index))}
-
-        <Button full danger>
+        {list.map((item, index) => this.renderItem(item, index))}
+        <Button full danger onPress={() => this.handleCheckout()}>
           <Text>Checkout</Text>
         </Button>
       </List>
@@ -66,4 +59,16 @@ class CoffeeCart extends Component {
   }
 }
 
-export default CoffeeCart;
+const mapStateToProps = state => ({
+  cart: state.cart
+});
+
+const mapActionsToProps = dispatch => ({
+  removeItemFromCart: item => dispatch(removeItemFromCart(item)),
+  checkoutCart: () => dispatch(checkoutCart())
+});
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(CoffeeCart);

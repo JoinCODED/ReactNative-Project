@@ -1,23 +1,25 @@
 import * as actionTypes from "../actions/types";
 
 const initialState = {
-  user: null,
-  error: null,
-  isAuthenticated: false
+  list: []
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.SET_CURRENT_USER:
+    case actionTypes.ADD_ITEM:
       return {
         ...state,
-        isAuthenticated: true,
-        token: action.payload
+        list: action.payload
       };
-    case actionTypes.SET_ERROR:
+    case actionTypes.REMOVE_ITEM:
       return {
         ...state,
-        error: action.payload
+        list: state.list.filter(item => item !== action.payload)
+      };
+    case actionTypes.CHECKOUT:
+      return {
+        ...state,
+        list: []
       };
     default:
       return state;

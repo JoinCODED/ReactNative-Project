@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { withNavigation } from "react-navigation";
+import React from "react";
+import { connect } from "react-redux";
 
 // NativeBase Components
 import {
@@ -15,6 +15,7 @@ import {
 
 // Style
 import styles from "./styles";
+import Counter from "./Counter";
 
 const MyHeader = ({ navigation }) => {
   return (
@@ -32,9 +33,7 @@ const MyHeader = ({ navigation }) => {
       </Body>
       <Right>
         <Button transparent onPress={() => navigation.navigate("CoffeeCart")}>
-          <Text style={styles.text}>
-            3 <Icon type="FontAwesome" name="coffee" style={styles.icon} />
-          </Text>
+          <Counter />
         </Button>
       </Right>
     </Header>

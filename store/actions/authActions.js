@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import { SET_CURRENT_USER, SET_ERROR } from "./types";
+import deviceStorage from "../../utilities/deviceStorage";
 
 // Register User
 
@@ -39,6 +40,7 @@ export const loginUser = (userData, navigation) => dispatch => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
+      deviceStorage.saveToken(token);
       // Navigate to Main page
       navigation.navigate("CoffeeList");
     })
