@@ -23,9 +23,11 @@ class CoffeeCart extends Component {
   handleCheckout() {
     this.props.checkoutCart();
   }
+
   handleRemove(item) {
     this.props.removeItemFromCart(item);
   }
+
   renderItem(item, index) {
     return (
       <ListItem key={index}>
@@ -46,6 +48,7 @@ class CoffeeCart extends Component {
       </ListItem>
     );
   }
+
   render() {
     const { list } = this.props.cart;
     return (

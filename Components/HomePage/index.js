@@ -3,13 +3,12 @@ import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
 
 // NativeBase Components
-import { Container, Header } from "native-base";
+import { Container } from "native-base";
 
 // Components
 import CoffeeList from "../CoffeeList";
 import CoffeeDetail from "../CoffeeDetail";
 import CoffeeCart from "../CoffeeCart";
-import MyHeader from "../MyHeader";
 import Login from "../Login";
 
 // Style
@@ -28,7 +27,13 @@ const Nav = createStackNavigator(
   {
     initialRouteName: "Login",
     navigationOptions: {
-      header: MyHeader
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "transparent"
+      },
+      headerTextStyle: {
+        fontWeight: "bold"
+      }
     },
     cardStyle: {
       backgroundColor: "rgb(20,90,100)"

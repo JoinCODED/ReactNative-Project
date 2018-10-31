@@ -8,42 +8,79 @@ import {
   ListItem,
   Card,
   CardItem,
+  Button,
   Thumbnail,
   Text,
   Left,
-  Content
+  Content,
+  Icon
 } from "native-base";
 
 // Style
 import styles from "./styles";
-import { getCoffeeShopByID } from "../../store/actions/coffeeActions";
+
+// Actions
+import { quantityCounter } from "../../utilities/quantityCounter";
 
 class CoffeeList extends Component {
-  Pressed(data) {
-    this.props.getCoffeeShopByID(data.id,this.props.coffee.coffeeshops)
-    this.props.navigation.navigate("CoffeeDetail");
+  static navigationOptions = ({ navigation }) => ({
+    title: "Coffee List",
+    headerLeft: null,
+    headerRight: (
+      <Button
+        light
+        transparent
+        onPress={() => navigation.navigate("CoffeeCart")}
+      >
+        <Text>
+          {navigation.getParam("quantity", 0)}{" "}
+          <Icon
+            type="FontAwesome"
+            name="coffee"
+            style={{ color: "white", fontSize: 15 }}
+          />
+        </Text>
+      </Button>
+    )
+  });
+
+  componenDidMount() {
+    this.props.navigation.setParams({ quantity: this.props.quantity });
   }
-  renderItem(data) {
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.quantity != this.props.quantity) {
+      this.props.navigation.setParams({ quantity: nextProps.quantity });
+    }
+  }
+
+  Pressed(shop) {
+    this.props.navigation.navigate("CoffeeDetail", {
+      shop: shop,
+      quantity: this.props.quantity
+    });
+  }
+
+  renderItem(shop) {
     return (
-      <TouchableOpacity key={data.id} onPress={() => this.Pressed(data)}>
+      <TouchableOpacity key={shop.id} onPress={() => this.Pressed(shop)}>
         <ImageBackground
-          source={{ uri: data.background }}
+          source={{ uri: shop.background }}
           style={styles.background}
         >
           <View style={styles.overlay} />
-
           <ListItem style={styles.transparent}>
             <Card style={styles.transparent}>
               <CardItem style={styles.transparent}>
                 <Left>
                   <Thumbnail
                     bordered
-                    source={{ uri: data.img }}
+                    source={{ uri: shop.img }}
                     style={styles.thumbnail}
                   />
-                  <Text style={styles.text}>{data.name}</Text>
+                  <Text style={styles.text}>{shop.name}</Text>
                   <Text note style={styles.text}>
-                    {data.distance}
+                    {shop.distance}
                   </Text>
                 </Left>
               </CardItem>
@@ -57,7 +94,7 @@ class CoffeeList extends Component {
     const { coffeeshops } = this.props.coffee;
     let ListItems;
     if (coffeeshops) {
-      ListItems = coffeeshops.map(data => this.renderItem(data));
+      ListItems = coffeeshops.map(shop => this.renderItem(shop));
     }
     return (
       <Content>
@@ -68,12 +105,11 @@ class CoffeeList extends Component {
 }
 
 const mapStateToProps = state => ({
-  coffee: state.coffee
+  coffee: state.coffee,
+  quantity: quantityCounter(state.cart.list)
 });
 
 export default connect(
   mapStateToProps,
-  {
-    getCoffeeShopByID
-  }
+  {}
 )(CoffeeList);

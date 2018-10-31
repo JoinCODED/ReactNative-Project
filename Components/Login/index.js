@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Keyboard } from "react-native";
+
 // NativeBase Components
 import {
   Text,
@@ -13,9 +14,7 @@ import {
   Input,
   Item,
   Content,
-  Header,
-  Left,
-  Right
+  Header
 } from "native-base";
 
 // Actions
@@ -34,9 +33,15 @@ class Login extends Component {
       password: ""
     };
   }
+
+  static navigationOptions = {
+    title: "Login"
+  };
+
   componentDidMount() {
     deviceStorage.getToken().then(value => this.handleToken(value));
   }
+
   handleLogin() {
     const { username, password } = this.state;
     const { navigation } = this.props;
@@ -49,6 +54,7 @@ class Login extends Component {
     );
     Keyboard.dismiss();
   }
+
   handleRegister() {
     const { username, password } = this.state;
     const { navigation } = this.props;
@@ -61,6 +67,7 @@ class Login extends Component {
     );
     Keyboard.dismiss();
   }
+
   handleToken(token) {
     if (token) {
       const decoded = jwt_decode(token);
@@ -68,6 +75,7 @@ class Login extends Component {
       this.props.navigation.navigate("CoffeeList");
     }
   }
+
   render() {
     const { username, password } = this.state;
     return (

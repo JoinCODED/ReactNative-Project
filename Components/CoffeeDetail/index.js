@@ -9,24 +9,19 @@ import {
   Left,
   Body,
   Right,
+  Icon,
   List,
   ListItem,
   Picker,
   Content
 } from "native-base";
 
-// List
-import list from "../CoffeeList/list";
-
 // Style
 import styles from "./styles";
 
 // Actions
-import {
-  getCoffeeShopByID,
-  getCoffeeShops
-} from "../../store/actions/coffeeActions";
 import { addItemToCart } from "../../store/actions/cartActions";
+import { quantityCounter } from "../../utilities/quantityCounter";
 
 class CoffeeDetail extends Component {
   constructor(props) {
@@ -36,16 +31,49 @@ class CoffeeDetail extends Component {
       option: "Small"
     };
   }
+
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam("shop", {}).name,
+    headerRight: (
+      <Button
+        light
+        transparent
+        onPress={() => navigation.navigate("CoffeeCart")}
+      >
+        <Text>
+          {navigation.getParam("quantity", 0)}{" "}
+          <Icon
+            type="FontAwesome"
+            name="coffee"
+            style={{ color: "white", fontSize: 15 }}
+          />
+        </Text>
+      </Button>
+    )
+  });
+
+  componenDidMount() {
+    this.props.navigation.setParams({ quantity: this.props.quantity });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.quantity != this.props.quantity) {
+      this.props.navigation.setParams({ quantity: nextProps.quantity });
+    }
+  }
+
   changeDrink(value) {
     this.setState({
       drink: value
     });
   }
+
   changeOption(value) {
     this.setState({
       option: value
     });
   }
+
   handleAdd() {
     const { drink, option } = this.state;
     const { list } = this.props.cart;
@@ -58,8 +86,7 @@ class CoffeeDetail extends Component {
   }
 
   render() {
-    const { coffeeshop } = this.props.coffee;
-    if (!coffeeshop) return <List />;
+    const coffeeshop = this.props.navigation.getParam("shop", {});
     return (
       <Content>
         <List>
@@ -113,16 +140,11 @@ class CoffeeDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-  coffee: state.coffee,
-  cart: state.cart
+  cart: state.cart,
+  quantity: quantityCounter(state.cart.list)
 });
 
 const mapActionsToProps = dispatch => ({
-  getCoffeeShops: () => dispatch(getCoffeeShops()),
-
-  getCoffeeShopByID: (id, coffeeshops) =>
-    dispatch(getCoffeeShopByID(id, coffeeshops)),
-
   addItemToCart: (item, cart) => dispatch(addItemToCart(item, cart))
 });
 
