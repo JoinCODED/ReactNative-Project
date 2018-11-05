@@ -5,41 +5,14 @@ import { createStackNavigator } from "react-navigation";
 // NativeBase Components
 import { Container } from "native-base";
 
-// Components
-import CoffeeList from "../CoffeeList";
-import CoffeeDetail from "../CoffeeDetail";
-import CoffeeCart from "../CoffeeCart";
-import Login from "../Login";
-
 // Style
 import styles from "./styles";
 
 // Actions
 import { getCoffeeShops } from "../../store/actions/coffeeActions";
 
-const Nav = createStackNavigator(
-  {
-    CoffeeList: CoffeeList,
-    CoffeeDetail: CoffeeDetail,
-    CoffeeCart: CoffeeCart,
-    Login: Login
-  },
-  {
-    initialRouteName: "Login",
-    navigationOptions: {
-      headerTintColor: "white",
-      headerStyle: {
-        backgroundColor: "transparent"
-      },
-      headerTextStyle: {
-        fontWeight: "bold"
-      }
-    },
-    cardStyle: {
-      backgroundColor: "rgb(20,90,100)"
-    }
-  }
-);
+// Navigation
+import Nav from "../Navigation";
 
 class HomePage extends Component {
   componentDidMount() {

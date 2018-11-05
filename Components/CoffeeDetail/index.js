@@ -56,9 +56,9 @@ class CoffeeDetail extends Component {
     this.props.navigation.setParams({ quantity: this.props.quantity });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.quantity != this.props.quantity) {
-      this.props.navigation.setParams({ quantity: nextProps.quantity });
+  componentDidUpdate(prevProps) {
+    if (prevProps.quantity != this.props.quantity) {
+      this.props.navigation.setParams({ quantity: this.props.quantity });
     }
   }
 

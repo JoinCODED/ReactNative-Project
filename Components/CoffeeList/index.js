@@ -48,13 +48,13 @@ class CoffeeList extends Component {
     this.props.navigation.setParams({ quantity: this.props.quantity });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.quantity != this.props.quantity) {
-      this.props.navigation.setParams({ quantity: nextProps.quantity });
+  componentDidUpdate(prevProps) {
+    if (prevProps.quantity != this.props.quantity) {
+      this.props.navigation.setParams({ quantity: this.props.quantity });
     }
   }
 
-  Pressed(shop) {
+  handlePress(shop) {
     this.props.navigation.navigate("CoffeeDetail", {
       shop: shop,
       quantity: this.props.quantity
@@ -63,7 +63,7 @@ class CoffeeList extends Component {
 
   renderItem(shop) {
     return (
-      <TouchableOpacity key={shop.id} onPress={() => this.Pressed(shop)}>
+      <TouchableOpacity key={shop.id} onPress={() => this.handlePress(shop)}>
         <ImageBackground
           source={{ uri: shop.background }}
           style={styles.background}
